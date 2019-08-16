@@ -33,7 +33,7 @@ GLFWwindow *createWindow(int width, int height) {
 	glfwSetErrorCallback(errorCb);
     ASSERT(glfwInit(), "GLFW init failed!");
 
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    // glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     GLFWwindow *window =
         glfwCreateWindow(width, height, "Hello, bgfx!", nullptr, nullptr);
 
