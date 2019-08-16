@@ -1,3 +1,6 @@
 build/
 bin/
+
+# ccls related stuff
 .ccls-cache
+compile_commands.json
