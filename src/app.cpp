@@ -5,7 +5,9 @@
 
 class ExampleApplication : public Application {
    private:
-    float f = 0;
+    float avgFps = 0;
+    float Fps = 0;
+    float passedTime = 0;
     char buf[512];
 
     void readSource() {
@@ -18,9 +20,7 @@ class ExampleApplication : public Application {
     ExampleApplication(GLFWwindow* w) : Application(w) {
     }
 
-    void init() override {
-        f = 0.0001;
-    }
+    void init() override {}
 
     void drawUI() override {
     
@@ -30,12 +30,18 @@ class ExampleApplication : public Application {
             // do stuff
         }
         ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+        ImGui::Text("FPS %.0f", avgFps);
         ImGui::End();
 	}
 
     void update(double dt) override {
-        f = 1/dt;
+        passedTime += dt;
+        Fps += 1;
+        if (passedTime > 1) {
+            avgFps = Fps / passedTime;
+            Fps = 0;
+            passedTime = 0;
+        }
     }
 };
 
