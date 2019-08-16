@@ -352,6 +352,9 @@ static const GLFWcallbacks* nextCallbacks;
 static void windowSizeCb(GLFWwindow* window, int w, int h) {
     auto& io = ImGui::GetIO();
     io.DisplaySize = ImVec2(float(w), float(h));
+    bgfx::reset(w, h, BGFX_RESET_VSYNC);
+	bgfx::setViewRect(0, 0, 0, uint16_t(w), uint16_t(h));
+
     if (nextCallbacks != nullptr && nextCallbacks->windowSizeCb)
         nextCallbacks->windowSizeCb(window, w, h);
 }

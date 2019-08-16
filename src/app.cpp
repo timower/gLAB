@@ -5,8 +5,8 @@
 
 class ExampleApplication : public Application {
    private:
-    float test = 0;
-    char sourceBuffer[1024];
+    float f = 0;
+    char buf[512];
 
     void readSource() {
     }
@@ -19,17 +19,23 @@ class ExampleApplication : public Application {
     }
 
     void init() override {
-        test = 0;
+        f = 0.0001;
     }
 
     void drawUI() override {
-        if (ImGui::Begin("Source Editor")) {
-            ImGui::InputTextMultiline("##", sourceBuffer, sizeof(sourceBuffer));
+    
+		ImGui::Begin("Window Start");
+        ImGui::Text("Hello, world %d", 123);
+        if (ImGui::Button("Save")) {
+            // do stuff
         }
+        ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
         ImGui::End();
-    }
+	}
 
     void update(double dt) override {
+        f = 1/dt;
     }
 };
 

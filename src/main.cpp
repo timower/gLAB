@@ -1,8 +1,6 @@
 #include <cstdio>
 #include <exception>
 
-#define DLL_EXPORT
-
 #include <GLFW/glfw3.h>
 
 #include <bgfx/bgfx.h>
