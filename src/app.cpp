@@ -1,9 +1,11 @@
 //#include "../lib/glabexternal.h"
+#include "app.h"
 #include "gLAB/all.h"
+
 
 class ExampleApplication : public Application {
    private:
-    float test;
+    float test = 0;
     char sourceBuffer[1024];
 
     void readSource() {
@@ -31,6 +33,7 @@ class ExampleApplication : public Application {
     }
 };
 
-extern "C" Application* createApplication(GLFWwindow* window) {
-    return new ExampleApplication(window);
+Application& getExampleApp(GLFWwindow* w) {
+    static ExampleApplication ex(w);
+    return ex;
 }

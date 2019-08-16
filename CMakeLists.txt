@@ -10,7 +10,9 @@ set(gLAB_INCLUDE
 set(gLAB_SRC
         src/main.cpp
         src/gui.cpp
-        src/window.cpp)
+        src/window.cpp
+		src/app.h
+		src/app.cpp)
 
 file(GLOB GUI_HEADERS include/gLAB/gui/*.h)
 
@@ -116,9 +118,5 @@ target_include_directories(gLAB PRIVATE lib/IconFontCppHeaders)
 
 target_link_libraries(gLAB glfw bgfx) # ${OPENGL_LIBRARIES} ODE FastNoiseSIMD)
 set_target_properties(gLAB PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/")
-
-
-add_library(app SHARED src/app.cpp ${gLAB_INCLUDE})
-target_include_directories(app PRIVATE include)
 #target_include_directories(app PRIVATE lib/glfw/include)
 #target_include_directories(app PRIVATE lib/imgui)

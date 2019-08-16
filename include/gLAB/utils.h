@@ -2,6 +2,7 @@
 
 #include "../lib/glabexternal.h"
 
+#include <cstdlib>
 #include <cstdint>
 #include <cstdio>
 
