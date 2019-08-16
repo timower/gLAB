@@ -6,7 +6,7 @@
 class ExampleApplication : public Application {
    private:
     float avgFps = 0;
-    float Fps = 0;
+    float frames = 0;
     float passedTime = 0;
     char buf[512];
 
@@ -36,10 +36,10 @@ class ExampleApplication : public Application {
 
     void update(double dt) override {
         passedTime += dt;
-        Fps += 1;
+        frames += 1;
         if (passedTime > 1) {
-            avgFps = Fps / passedTime;
-            Fps = 0;
+            avgFps = frames / passedTime;
+            frames = 0;
             passedTime = 0;
         }
     }
