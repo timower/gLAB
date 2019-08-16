@@ -33,7 +33,7 @@ GLFWwindow *createWindow(int width, int height) {
 	glfwSetErrorCallback(errorCb);
     ASSERT(glfwInit(), "GLFW init failed!");
 
-    // glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     GLFWwindow *window =
         glfwCreateWindow(width, height, "Hello, bgfx!", nullptr, nullptr);
 
@@ -51,9 +51,10 @@ void initBgfx(GLFWwindow *window, int width, int height) {
 
 #if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
     platformData.nwh =
-        reinterpret_cast<void *>(uintptr_t(glfwGetGLXWindow(window)));
+        reinterpret_cast<void *>(uintptr_t(glfwGetX11Window(window)));
+
     platformData.ndt = glfwGetX11Display();
-    platformData.context = glfwGetGLXContext(window);
+    platformData.context = nullptr;  // glfwGetGLXContext(window);
 #elif BX_PLATFORM_OSX
     platformData.nwh = glfwGetCocoaWindow(window);
 #elif BX_PLATFORM_WINDOWS
