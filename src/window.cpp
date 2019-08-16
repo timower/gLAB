@@ -54,13 +54,15 @@ void initBgfx(GLFWwindow *window, int width, int height) {
         reinterpret_cast<void *>(uintptr_t(glfwGetX11Window(window)));
 
     platformData.ndt = glfwGetX11Display();
-    platformData.context = nullptr;  // glfwGetGLXContext(window);
 #elif BX_PLATFORM_OSX
     platformData.nwh = glfwGetCocoaWindow(window);
 #elif BX_PLATFORM_WINDOWS
     platformData.nwh = glfwGetWin32Window(window);
 #endif  // BX_PLATFORM_
 
+    platformData.context = nullptr;  // glfwGetGLXContext(window);
+    platformData.backBuffer = nullptr;
+    platformData.backBufferDS = nullptr;
     bgfx::setPlatformData(platformData);
 
     bgfx::Init bgfxInit;
