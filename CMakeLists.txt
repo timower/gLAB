@@ -95,7 +95,7 @@ add_subdirectory(lib/bgfx.cmake)
 target_include_directories(gLAB PRIVATE lib/bgfx.cmake/bgfx/include)
 
 # GLM
-#target_include_directories(gLAB PRIVATE deps/glm-0.9.8.5)
+target_include_directories(gLAB PRIVATE lib/glm)
 
 # tinygltf:
 #target_include_directories(gLAB PRIVATE deps/tinygltf-devel)
