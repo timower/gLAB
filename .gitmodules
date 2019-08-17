@@ -10,3 +10,6 @@
 [submodule "lib/IconFontCppHeaders"]
 	path = lib/IconFontCppHeaders
 	url = https://github.com/juliettef/IconFontCppHeaders.git
+[submodule "lib/glm"]
+	path = lib/glm
+	url = https://github.com/g-truc/glm.git
