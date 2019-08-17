@@ -1,13 +1,9 @@
 #include <cstdio>
 #include <exception>
 
+#include <glad/glad.h>
+
 #include <GLFW/glfw3.h>
-
-#include <bgfx/bgfx.h>
-#include <bgfx/platform.h>
-
-#include <bx/file.h>
-#include <bx/os.h>
 
 #include "gLAB/application.h"
 #include "gLAB/gui.h"
@@ -16,15 +12,13 @@
 
 #include "app.h"
 
-int main(int /*argc*/, char * /*argv*/[]) {
-    auto *window = createWindow(800, 600);
-    initBgfx(window);
+int main(int /*argc*/, char* /*argv*/[]) {
+    auto* window = createWindow(800, 600);
+    initGL(window);
 
     setGlfwCallbacks(window, getImguiCallbacks(nullptr));
 
-    bgfx::setDebug(BGFX_DEBUG_TEXT);
-
-    imguiCreate();
+    imguiCreate(window);
 
     auto& app = getExampleApp(window);
 
@@ -35,11 +29,12 @@ int main(int /*argc*/, char * /*argv*/[]) {
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         const auto time = glfwGetTime();
         const auto dt = time - lastTime;
         lastTime = time;
-
-        bgfx::touch(0);
 
         imguiBeginFrame();
 
@@ -49,11 +44,8 @@ int main(int /*argc*/, char * /*argv*/[]) {
 
         app.update(dt);
 
-        // Advance to next frame. Rendering thread will be kicked to
-        // process submitted rendering primitives.
-        bgfx::frame();
-
         counter++;
+        glfwSwapBuffers(window);
     }
 
     imguiDestroy();

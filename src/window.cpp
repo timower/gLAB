@@ -1,84 +1,45 @@
 #include "gLAB/window.h"
 
+#include <glad/glad.h>
+
 #include "gLAB/utils.h"
 
-#include <bgfx/bgfx.h>
-#include <bgfx/platform.h>
-
-#define ENTRY_CONFIG_USE_WAYLAND 0
-
-#if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
-#if ENTRY_CONFIG_USE_WAYLAND
-#include <wayland-egl.h>
-#define GLFW_EXPOSE_NATIVE_WAYLAND
-#else
-#define GLFW_EXPOSE_NATIVE_X11
-#define GLFW_EXPOSE_NATIVE_GLX
-#endif
-#elif BX_PLATFORM_OSX
-#define GLFW_EXPOSE_NATIVE_COCOA
-#define GLFW_EXPOSE_NATIVE_NSGL
-#elif BX_PLATFORM_WINDOWS
-#define GLFW_EXPOSE_NATIVE_WIN32
-#define GLFW_EXPOSE_NATIVE_WGL
-#endif  //
-#include <GLFW/glfw3native.h>
-
-void errorCb(int code, const char *error) {
+void errorCb(int code, const char* error) {
     fprintf(stderr, "GLFW error: %d\n %s \n", code, error);
 }
 
-GLFWwindow *createWindow(int width, int height) {
-
-	glfwSetErrorCallback(errorCb);
+GLFWwindow* createWindow(int width, int height) {
+    glfwSetErrorCallback(errorCb);
     ASSERT(glfwInit(), "GLFW init failed!");
 
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow *window =
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    GLFWwindow* window =
         glfwCreateWindow(width, height, "Hello, bgfx!", nullptr, nullptr);
 
     ASSERT(window, "GLFW window is null");
 
+    glfwMakeContextCurrent(window);
+
+    // disable V-sync:
+    glfwSwapInterval(0);
+
     return window;
 }
 
-void initBgfx(GLFWwindow *window, int width, int height) {
-    bgfx::PlatformData platformData;
+void initGL(GLFWwindow* window) {
+    ASSERT(gladLoadGL(), "Unable to initialize openGL");
 
-    if (width < 0 || height < 0) {
-        glfwGetWindowSize(window, &width, &height);
-    }
-
-#if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
-    platformData.nwh =
-        reinterpret_cast<void *>(uintptr_t(glfwGetX11Window(window)));
-
-    platformData.ndt = glfwGetX11Display();
-#elif BX_PLATFORM_OSX
-    platformData.nwh = glfwGetCocoaWindow(window);
-#elif BX_PLATFORM_WINDOWS
-    platformData.nwh = glfwGetWin32Window(window);
-#endif  // BX_PLATFORM_
-
-    platformData.context = nullptr;  // glfwGetGLXContext(window);
-    platformData.backBuffer = nullptr;
-    platformData.backBufferDS = nullptr;
-    bgfx::setPlatformData(platformData);
-
-    bgfx::Init bgfxInit;
-    bgfxInit.type =
-        bgfx::RendererType::Count;  // Automatically choose a renderer.
-    bgfxInit.resolution.width = uint32_t(width);
-    bgfxInit.resolution.height = uint32_t(height);
-    bgfxInit.resolution.reset = BGFX_RESET_NONE;  // BGFX_RESET_VSYNC;
-
-    ASSERT(bgfx::init(bgfxInit), "Can't init bgfx!");
-
-    bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x0, 1.0f, 0);
-    bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height));
+    // Make a dummy GL call (we don't actually need the result)
+    // IF YOU GET A CRASH HERE: it probably means that you haven't initialized
+    // the OpenGL function loader used by this code. Desktop OpenGL 3/4 need a
+    // function loader. See the IMGUI_IMPL_OPENGL_LOADER_xxx explanation above.
+    GLint current_texture;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &current_texture);
 }
 
-void setGlfwCallbacks(GLFWwindow *window, const GLFWcallbacks &callbacks) {
+void setGlfwCallbacks(GLFWwindow* window, const GLFWcallbacks& callbacks) {
     if (callbacks.windowSizeCb != nullptr)
         glfwSetWindowSizeCallback(window, callbacks.windowSizeCb);
 

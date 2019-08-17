@@ -2,6 +2,6 @@
 
 #include "gLAB/application.h"
 
-class GLFWwindow;
+struct GLFWwindow;
 
 Application& getExampleApp(GLFWwindow* w);

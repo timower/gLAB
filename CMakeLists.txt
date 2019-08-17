@@ -19,9 +19,13 @@ file(GLOB GUI_HEADERS include/gLAB/gui/*.h)
 # IMGUI
 file(GLOB IMGUI_SRC lib/imgui/*.cpp lib/imgui/*.h)
 
-add_executable(gLAB ${gLAB_SRC} ${gLAB_INCLUDE} ${IMGUI_SRC} ${GUI_HEADERS})
+set(GLAD_SRC lib/glad/src/glad.c)
+
+add_executable(gLAB ${gLAB_SRC} ${gLAB_INCLUDE} ${IMGUI_SRC} ${GUI_HEADERS} ${GLAD_SRC})
 
 target_include_directories(gLAB PRIVATE lib/imgui)
+
+target_include_directories(gLAB PRIVATE lib/glad/include)
 
 target_compile_features(gLAB PRIVATE cxx_std_17)
 
@@ -81,18 +85,18 @@ add_subdirectory(lib/glfw)
 target_include_directories(gLAB PRIVATE lib/glfw/include)
 
 # BGFX:
-set( BGFX_BUILD_TOOLS      ON )
-set( BGFX_BUILD_EXAMPLES   OFF  )
-set( BGFX_INSTALL          OFF  )
-set( BGFX_INSTALL_EXAMPLES OFF )
-set( BGFX_CUSTOM_TARGETS   OFF  )
-set( BGFX_USE_OVR          OFF )
-set( BGFX_AMALGAMATED      ON )
-set( BX_AMALGAMATED        ON )
-set( BGFX_CONFIG_DEBUG     OFF )
-set( BGFX_USE_DEBUG_SUFFIX ON  )
-add_subdirectory(lib/bgfx.cmake)
-target_include_directories(gLAB PRIVATE lib/bgfx.cmake/bgfx/include)
+#set( BGFX_BUILD_TOOLS      ON )
+#set( BGFX_BUILD_EXAMPLES   OFF  )
+#set( BGFX_INSTALL          OFF  )
+#set( BGFX_INSTALL_EXAMPLES OFF )
+#set( BGFX_CUSTOM_TARGETS   OFF  )
+#set( BGFX_USE_OVR          OFF )
+#set( BGFX_AMALGAMATED      ON )
+#set( BX_AMALGAMATED        ON )
+#set( BGFX_CONFIG_DEBUG     OFF )
+#set( BGFX_USE_DEBUG_SUFFIX ON  )
+#add_subdirectory(lib/bgfx.cmake)
+#target_include_directories(gLAB PRIVATE lib/bgfx.cmake/bgfx/include)
 
 # GLM
 target_include_directories(gLAB PRIVATE lib/glm)
@@ -116,7 +120,7 @@ target_include_directories(gLAB PRIVATE lib/glm)
 # Font ICONS:
 target_include_directories(gLAB PRIVATE lib/IconFontCppHeaders)
 
-target_link_libraries(gLAB glfw bgfx) # ${OPENGL_LIBRARIES} ODE FastNoiseSIMD)
+target_link_libraries(gLAB glfw  ${OPENGL_LIBRARIES}) # ODE FastNoiseSIMD)
 set_target_properties(gLAB PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/")
 #target_include_directories(app PRIVATE lib/glfw/include)
 #target_include_directories(app PRIVATE lib/imgui)

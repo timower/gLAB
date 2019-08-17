@@ -27,6 +27,6 @@ struct GLFWcallbacks {
 
 GLFWwindow *createWindow(int width, int height);
 
-void initBgfx(GLFWwindow *window, int width = -1, int height = -1);
+void initGL(GLFWwindow *window);
 
 void setGlfwCallbacks(GLFWwindow *window, const GLFWcallbacks &callbacks);

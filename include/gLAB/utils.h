@@ -2,9 +2,9 @@
 
 #include "../lib/glabexternal.h"
 
-#include <cstdlib>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 
 #define ASSERT(cond, msg) \
     do {                  \
@@ -20,13 +20,4 @@
 [[noreturn]] inline void die(const char* reason) {
     fprintf(stderr, "%s\n", reason);
     std::exit(-1);
-}
-
-inline bool checkAvailTransientBuffers(uint32_t _numVertices,
-                                       const bgfx::VertexDecl& _decl,
-                                       uint32_t _numIndices) {
-    return _numVertices ==
-               bgfx::getAvailTransientVertexBuffer(_numVertices, _decl) &&
-           (0 == _numIndices ||
-            _numIndices == bgfx::getAvailTransientIndexBuffer(_numIndices));
 }
