@@ -10,11 +10,6 @@
 #include <gLAB/gui.h>
 #include <gLAB/utils.h>
 
-#include "gLAB/gui/fs_imgui_image.bin.h"
-#include "gLAB/gui/fs_ocornut_imgui.bin.h"
-#include "gLAB/gui/vs_imgui_image.bin.h"
-#include "gLAB/gui/vs_ocornut_imgui.bin.h"
-
 #include "gLAB/gui/icons_font_awesome.ttf.h"
 #include "gLAB/gui/icons_kenney.ttf.h"
 #include "gLAB/gui/roboto_regular.ttf.h"
@@ -146,9 +141,8 @@ struct OcornutImguiContext {
         // renderer would actually work without any VAO bound, but then our
         // VertexAttrib calls would overwrite the default one currently bound.
         GLuint vertex_array_object = 0;
-#ifndef IMGUI_IMPL_OPENGL_ES2
         glGenVertexArrays(1, &vertex_array_object);
-#endif
+
         // Setup render state: alpha-blending enabled, no face culling, no depth
         // testing, scissor enabled, polygon fill
         glEnable(GL_BLEND);
@@ -186,10 +180,7 @@ struct OcornutImguiContext {
                            // Applications using GL 3.3 may set that otherwise.
 #endif
 
-        (void)vertex_array_object;
-#ifndef IMGUI_IMPL_OPENGL_ES2
         glBindVertexArray(vertex_array_object);
-#endif
 
         // Bind vertex/index buffers and setup attributes for ImDrawVert
         glBindBuffer(GL_ARRAY_BUFFER, g_VboHandle);
@@ -273,6 +264,7 @@ struct OcornutImguiContext {
                         // Bind texture, Draw
                         glBindTexture(GL_TEXTURE_2D,
                                       (GLuint)(intptr_t)pcmd->TextureId);
+#define IMGUI_IMPL_OPENGL_HAS_DRAW_WITH_BASE_VERTEX 1
 #if IMGUI_IMPL_OPENGL_HAS_DRAW_WITH_BASE_VERTEX
                         glDrawElementsBaseVertex(
                             GL_TRIANGLES, (GLsizei)pcmd->ElemCount,
@@ -295,9 +287,7 @@ struct OcornutImguiContext {
         }
 
         // Destroy the temporary VAO
-#ifndef IMGUI_IMPL_OPENGL_ES2
         glDeleteVertexArrays(1, &vertex_array_object);
-#endif
 
         // Restore modified GL state
         glUseProgram(last_program);

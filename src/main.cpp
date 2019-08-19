@@ -12,7 +12,22 @@
 
 #include "app.h"
 
+#include <stdio.h> /* defines FILENAME_MAX */
+
+#include <direct.h>
+#define GetCurrentDir _getcwd
+
 int main(int /*argc*/, char* /*argv*/[]) {
+    char cCurrentPath[FILENAME_MAX];
+
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))) {
+        return errno;
+    }
+
+    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+
+    printf("The current working directory is %s", cCurrentPath);
+
     auto* window = createWindow(800, 600);
     initGL(window);
 

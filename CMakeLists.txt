@@ -6,13 +6,16 @@ set(gLAB_INCLUDE
     include/gLAB/gui.h
     include/gLAB/utils.h
     include/gLAB/window.h
-    include/gLAB/application.h)
+    include/gLAB/application.h
+	include/gLAB/shader.h
+	include/gLAB/math/transform.h)
 set(gLAB_SRC
         src/main.cpp
         src/gui.cpp
         src/window.cpp
 		src/app.h
-		src/app.cpp)
+		src/app.cpp
+		src/shader.cpp)
 
 file(GLOB GUI_HEADERS include/gLAB/gui/*.h)
 
